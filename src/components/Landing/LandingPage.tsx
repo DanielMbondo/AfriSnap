@@ -81,7 +81,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin, onShowSig
               <div className="bg-blue-600 p-2 rounded-lg">
                 <Camera className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">Honcho</span>
+              <span className="text-xl font-bold text-gray-900">AfriSnap</span>
             </div>
             
             <div className="flex items-center space-x-4">
