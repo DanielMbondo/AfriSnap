@@ -87,7 +87,7 @@ function App() {
             {/* Default dashboard for other users */}
             {currentView === 'dashboard' && auth.user.role !== 'photographer' && (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome to Honcho</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-4">Welcome to AfriSnap</h1>
                 <p className="text-gray-600 mb-8">You can access event galleries shared with you.</p>
                 <button 
                   onClick={() => setCurrentView('gallery')}
