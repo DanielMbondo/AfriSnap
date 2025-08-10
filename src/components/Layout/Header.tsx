@@ -6,7 +6,7 @@ interface HeaderProps {
   title?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title = 'AfriSnap' }) => {
+export const Header: React.FC<HeaderProps> = ({ title = 'Honcho' }) => {
   const { user, logout } = useAuth();
 
   return (
