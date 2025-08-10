@@ -212,7 +212,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin, onShowSig
             Ready to transform your photography business?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of photographers who are already using Honcho to grow their business
+            Join thousands of photographers who are already using AfriSnap to grow their business
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
