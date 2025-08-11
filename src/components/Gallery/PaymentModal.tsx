@@ -28,8 +28,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     e.preventDefault();
     setIsProcessing(true);
     
-    // Mock payment processing
+    // Mock payment processing with Stripe-like flow
     setTimeout(() => {
+      // Simulate successful payment
+      alert(`Payment successful! $${total.toFixed(2)} charged. Photos will be sent to ${formData.email}`);
       setIsProcessing(false);
       onSuccess();
     }, 2000);

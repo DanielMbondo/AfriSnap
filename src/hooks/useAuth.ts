@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { User } from '../types';
+import { mockDatabase } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;
@@ -35,19 +36,26 @@ export const useAuthProvider = () => {
   const signup = async (email: string, password: string, name: string, role: 'photographer' | 'client') => {
     setIsLoading(true);
     try {
-      // Mock signup - in production, this would be an API call
+      // Check if user already exists
+      const existingUser = mockDatabase.users.find(u => u.email === email);
+      if (existingUser) {
+        throw new Error('User already exists');
+      }
+
       const mockUser: User = {
-        id: Date.now().toString(),
+        id: (mockDatabase.users.length + 1).toString(),
         email,
         name,
         role,
         createdAt: new Date()
       };
       
+      // Add to mock database
+      mockDatabase.users.push(mockUser);
       localStorage.setItem('honcho_user', JSON.stringify(mockUser));
       setUser(mockUser);
     } catch (error) {
-      throw new Error('Signup failed');
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -56,19 +64,16 @@ export const useAuthProvider = () => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // Mock authentication - in production, this would be an API call
-      const mockUser: User = {
-        id: '1',
-        email,
-        name: email.split('@')[0],
-        role: email.includes('photographer') ? 'photographer' : 'client',
-        createdAt: new Date()
-      };
+      // Find user in mock database
+      const foundUser = mockDatabase.users.find(u => u.email === email);
+      if (!foundUser) {
+        throw new Error('User not found');
+      }
       
-      localStorage.setItem('honcho_user', JSON.stringify(mockUser));
-      setUser(mockUser);
+      localStorage.setItem('honcho_user', JSON.stringify(foundUser));
+      setUser(foundUser);
     } catch (error) {
-      throw new Error('Login failed');
+      throw error;
     } finally {
       setIsLoading(false);
     }

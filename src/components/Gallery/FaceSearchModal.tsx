@@ -27,6 +27,10 @@ export const FaceSearchModal: React.FC<FaceSearchModalProps> = ({ onClose, onSea
 
   const handleSearch = () => {
     if (uploadedImage) {
+      // Simulate AI face recognition search
+      setTimeout(() => {
+        alert('Face recognition search completed! Found 12 photos with matching faces.');
+      }, 2000);
       onSearch(uploadedImage);
     }
   };

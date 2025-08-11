@@ -26,13 +26,26 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onViewGallery }) =>
   };
 
   const handleQRCode = () => {
-    // Open QR code in new window or show modal
-    window.open(event.qrCode, '_blank');
+    // Create a modal or new window with QR code
+    const qrWindow = window.open('', '_blank', 'width=400,height=400');
+    if (qrWindow) {
+      qrWindow.document.write(`
+        <html>
+          <head><title>QR Code - ${event.name}</title></head>
+          <body style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;font-family:Arial,sans-serif;">
+            <h2>${event.name}</h2>
+            <img src="${event.qrCode}" alt="QR Code" style="border:1px solid #ccc;padding:20px;"/>
+            <p>Scan to access gallery</p>
+          </body>
+        </html>
+      `);
+    }
   };
 
   const handleSettings = () => {
-    // Open settings modal (would be implemented)
-    alert('Event settings would open here');
+    // Show settings modal with event configuration
+    const settings = event.settings;
+    alert(`Event Settings:\n\nAuto Approve: ${settings.autoApprove ? 'Yes' : 'No'}\nAllow Downloads: ${settings.allowDownloads ? 'Yes' : 'No'}\nRequire Payment: ${settings.requirePayment ? 'Yes' : 'No'}\nPrice: $${settings.price}\nNotifications: ${settings.notificationsEnabled ? 'Enabled' : 'Disabled'}`);
   };
 
   return (
@@ -99,17 +112,23 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onViewGallery }) =>
 
         {/* Actions */}
         <div className="flex space-x-2">
-          <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-1">
+          <button 
             onClick={onViewGallery}
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-1"
+          >
             <ExternalLink className="h-4 w-4" />
             <span>View Gallery</span>
           </button>
-          <button className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors">
+          <button 
             onClick={handleQRCode}
+            className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+          >
             <QrCode className="h-5 w-5 text-gray-600" />
           </button>
-          <button className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors">
+          <button 
             onClick={handleSettings}
+            className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+          >
             <Settings className="h-5 w-5 text-gray-600" />
           </button>
         </div>

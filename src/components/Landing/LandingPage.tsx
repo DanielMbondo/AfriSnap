@@ -122,12 +122,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin, onShowSig
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2 shadow-lg">
+              <button 
                 onClick={onShowSignup}
+                className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2 shadow-lg"
+              >
                 <span>Start Free Trial</span>
                 <ArrowRight className="h-5 w-5" />
               </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
+              <button 
+                onClick={() => window.open('https://www.youtube.com/watch?v=demo', '_blank')}
+                className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors"
+              >
                 Watch Demo
               </button>
             </div>
@@ -216,8 +221,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onShowLogin, onShowSig
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2">
+            <button 
               onClick={onShowSignup}
+              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-50 transition-colors flex items-center space-x-2"
+            >
               <span>Start Your Free Trial</span>
               <ArrowRight className="h-5 w-5" />
             </button>

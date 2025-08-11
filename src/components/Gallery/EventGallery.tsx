@@ -13,6 +13,7 @@ import {
 import { FaceSearchModal } from './FaceSearchModal';
 import { PhotoGrid } from './PhotoGrid';
 import { PaymentModal } from './PaymentModal';
+import { mockDatabase } from '../../lib/supabase';
 
 export const EventGallery: React.FC = () => {
   const [showFaceSearch, setShowFaceSearch] = useState(false);
@@ -20,39 +21,9 @@ export const EventGallery: React.FC = () => {
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Mock photos
-  const photos = [
-    {
-      id: '1',
-      url: 'https://images.pexels.com/photos/1667434/pexels-photo-1667434.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/1667434/pexels-photo-1667434.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '2',
-      url: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '3',
-      url: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '4',
-      url: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '5',
-      url: 'https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/1729931/pexels-photo-1729931.jpeg?auto=compress&cs=tinysrgb&w=300'
-    },
-    {
-      id: '6',
-      url: 'https://images.pexels.com/photos/2253842/pexels-photo-2253842.jpeg?auto=compress&cs=tinysrgb&w=600',
-      thumbnail: 'https://images.pexels.com/photos/2253842/pexels-photo-2253842.jpeg?auto=compress&cs=tinysrgb&w=300'
-    }
-  ];
+  // Get photos from database
+  const currentEvent = mockDatabase.events[0]; // For demo, use first event
+  const photos = currentEvent?.photos || [];
 
   const handlePurchase = () => {
     if (selectedPhotos.length > 0) {
@@ -60,6 +31,20 @@ export const EventGallery: React.FC = () => {
     }
   };
 
+  const handleShareGallery = () => {
+    const galleryUrl = `${window.location.origin}/gallery/${currentEvent?.id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: currentEvent?.name || 'Event Gallery',
+        text: 'Check out these amazing photos!',
+        url: galleryUrl,
+      });
+    } else {
+      navigator.clipboard.writeText(galleryUrl).then(() => {
+        alert('Gallery link copied to clipboard!');
+      });
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -79,6 +64,7 @@ export const EventGallery: React.FC = () => {
               </button>
               
               <button className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors">
+                onClick={handleShareGallery}
                 <QrCode className="h-5 w-5" />
                 <span>Share Gallery</span>
               </button>
