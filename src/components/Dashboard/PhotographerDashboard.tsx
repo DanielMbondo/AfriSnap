@@ -13,6 +13,7 @@ import {
 import { useEvents } from '../../hooks/useEvents';
 import { EventCard } from './EventCard';
 import { CreateEventModal } from './CreateEventModal';
+import { UploadPhotosModal } from './UploadPhotosModal';
 import { StatsCard } from './StatsCard';
 
 interface PhotographerDashboardProps {
@@ -22,6 +23,8 @@ interface PhotographerDashboardProps {
 export const PhotographerDashboard: React.FC<PhotographerDashboardProps> = ({ onViewGallery }) => {
   const { events, isLoading, createEvent } = useEvents();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState<string>('');
 
   if (isLoading) {
     return (
@@ -119,7 +122,15 @@ export const PhotographerDashboard: React.FC<PhotographerDashboardProps> = ({ on
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map(event => (
-              <EventCard key={event.id} event={event} onViewGallery={onViewGallery} />
+              <EventCard 
+                key={event.id} 
+                event={event} 
+                onViewGallery={onViewGallery}
+                onUploadPhotos={(eventId) => {
+                  setSelectedEventId(eventId);
+                  setShowUploadModal(true);
+                }}
+              />
             ))}
           </div>
         )}
@@ -131,6 +142,23 @@ export const PhotographerDashboard: React.FC<PhotographerDashboardProps> = ({ on
           onSubmit={async (eventData) => {
             await createEvent(eventData);
             setShowCreateModal(false);
+          }}
+        />
+      )}
+
+      {showUploadModal && (
+        <UploadPhotosModal
+          eventId={selectedEventId}
+          onClose={() => {
+            setShowUploadModal(false);
+            setSelectedEventId('');
+          }}
+          onUploadComplete={(photos) => {
+            console.log('Photos uploaded:', photos);
+            setShowUploadModal(false);
+            setSelectedEventId('');
+            // Refresh events to show updated photo count
+            window.location.reload();
           }}
         />
       )}

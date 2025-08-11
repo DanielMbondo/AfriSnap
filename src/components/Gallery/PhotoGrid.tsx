@@ -55,7 +55,7 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({
                     <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
                       <Heart className="h-4 w-4 text-gray-600" />
                     </button>
-                    <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                    <button 
                       onClick={() => {
                         const link = document.createElement('a');
                         link.href = photo.url;
@@ -64,6 +64,8 @@ export const PhotoGrid: React.FC<PhotoGridProps> = ({
                         link.click();
                         document.body.removeChild(link);
                       }}
+                      className="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
+                    >
                       <Download className="h-4 w-4 text-gray-600" />
                     </button>
                   </div>

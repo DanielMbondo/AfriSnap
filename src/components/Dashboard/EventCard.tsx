@@ -7,16 +7,18 @@ import {
   QrCode, 
   Settings,
   ExternalLink,
-  MoreVertical
+  MoreVertical,
+  Upload
 } from 'lucide-react';
 import { Event } from '../../types';
 
 interface EventCardProps {
   event: Event;
   onViewGallery: () => void;
+  onUploadPhotos: (eventId: string) => void;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, onViewGallery }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, onViewGallery, onUploadPhotos }) => {
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
@@ -114,20 +116,29 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onViewGallery }) =>
         <div className="flex space-x-2">
           <button 
             onClick={onViewGallery}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-1"
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-1"
           >
             <ExternalLink className="h-4 w-4" />
             <span>View Gallery</span>
           </button>
           <button 
+            onClick={() => onUploadPhotos(event.id)}
+            className="p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors"
+            title="Upload Photos"
+          >
+            <Upload className="h-5 w-5" />
+          </button>
+          <button 
             onClick={handleQRCode}
             className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+            title="Show QR Code"
           >
             <QrCode className="h-5 w-5 text-gray-600" />
           </button>
           <button 
             onClick={handleSettings}
             className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+            title="Event Settings"
           >
             <Settings className="h-5 w-5 text-gray-600" />
           </button>

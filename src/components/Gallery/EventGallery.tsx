@@ -8,16 +8,22 @@ import {
   Filter,
   Heart,
   ShoppingCart,
-  User
+  User,
+  Upload,
+  Plus
 } from 'lucide-react';
 import { FaceSearchModal } from './FaceSearchModal';
 import { PhotoGrid } from './PhotoGrid';
 import { PaymentModal } from './PaymentModal';
+import { UploadPhotosModal } from '../Dashboard/UploadPhotosModal';
 import { mockDatabase } from '../../lib/supabase';
+import { useAuth } from '../../hooks/useAuth';
 
 export const EventGallery: React.FC = () => {
+  const { user } = useAuth();
   const [showFaceSearch, setShowFaceSearch] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -63,11 +69,23 @@ export const EventGallery: React.FC = () => {
                 <span>Find Your Photos</span>
               </button>
               
-              <button className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors">
+              <button 
                 onClick={handleShareGallery}
+                className="bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors"
+              >
                 <QrCode className="h-5 w-5" />
                 <span>Share Gallery</span>
               </button>
+              
+              {user?.role === 'photographer' && (
+                <button
+                  onClick={() => setShowUpload(true)}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3 rounded-lg font-medium flex items-center space-x-2 transition-colors"
+                >
+                  <Upload className="h-5 w-5" />
+                  <span>Add Photos</span>
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -138,6 +156,19 @@ export const EventGallery: React.FC = () => {
           onSuccess={() => {
             setShowPayment(false);
             setSelectedPhotos([]);
+          }}
+        />
+      )}
+
+      {showUpload && (
+        <UploadPhotosModal
+          eventId={currentEvent?.id || '1'}
+          onClose={() => setShowUpload(false)}
+          onUploadComplete={(photos) => {
+            console.log('Photos uploaded to gallery:', photos);
+            setShowUpload(false);
+            // Refresh the page to show new photos
+            window.location.reload();
           }}
         />
       )}
